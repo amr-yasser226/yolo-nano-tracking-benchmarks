@@ -77,6 +77,18 @@ When normalized against YOLOv10n, the computational cost of the newer iterations
     \end{tabular}
 \end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../results/plots/03_mean_fps_bars.png}
+    \caption{Mean FPS comparison between pure detection and tracking.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../results/plots/04_stage_breakdown.png}
+    \caption{Pipeline stage breakdown isolating the forward pass inference time.}
+\end{figure}
+
 \section{Analysis and Discussion}
 
 \paragraph{Pure Detector Cost vs Tracker Overhead}
@@ -87,6 +99,12 @@ Mean metrics can obscure system jitter. The 95th percentile (p95) tracking laten
 
 \paragraph{Detection Density Constraints}
 The number of unique tracked identities varies (200 for v10n vs 149 for v12n). While this may indicate differences in false-positive suppression or identity-switching behavior, sharp divergences in detection density can marginally skew the FPS measurements, as fewer active tracks reduce Kalman filter update costs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../results/plots/08_sample_frames.png}
+    \caption{Sample frames with tracking annotations from YOLOv10n, YOLOv11n, and YOLOv12n.}
+\end{figure}
 
 \section{Conclusion}
 For constrained environments requiring maximum throughput, YOLOv10n remains the optimal choice, delivering the highest FPS and lowest latency variance. YOLOv11n offers a competitive middle ground, trading a marginal 8.7\% increase in pure detection latency for potentially refined architectural features. YOLOv12n, despite its lower parameter count, incurs a significant 53.6\% detection latency penalty, demanding careful consideration if deployed in latency-critical real-time tracking systems.
