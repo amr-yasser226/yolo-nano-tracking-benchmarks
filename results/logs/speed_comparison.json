@@ -1,0 +1,146 @@
+{
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30.0,
+    "frame_count": 942,
+    "duration_sec": 31.4
+  },
+  "config": {
+    "imgsz": 640,
+    "conf": 0.25,
+    "iou": 0.45,
+    "device": "0",
+    "half": true,
+    "tracker": "bytetrack.yaml",
+    "vehicle_classes": [
+      2,
+      3,
+      5,
+      7
+    ],
+    "warmup_frames": 30,
+    "ultralytics": "8.4.45",
+    "torch": "2.10.0+cu128",
+    "cuda": "12.8",
+    "gpu": "Tesla T4"
+  },
+  "load_errors": {},
+  "runtime_failures": {},
+  "models": {
+    "YOLOv10n": {
+      "weights": "yolov10n.pt",
+      "params": 2775520,
+      "load_time_s": 0.5180254230000401,
+      "predict": {
+        "label": "YOLOv10n-predict",
+        "frames": 942,
+        "wall_ms_mean": 11.783973375795993,
+        "wall_ms_median": 11.639779500001168,
+        "wall_ms_std": 0.7516283617824193,
+        "wall_ms_p95": 12.633982949944311,
+        "inference_ms_mean": 9.23802532802502,
+        "inference_ms_median": 9.12390499996718,
+        "preprocess_ms_mean": 1.609034807854506,
+        "postprocess_ms_mean": 0.5933242547771944,
+        "fps_wall_mean": 85.13446574884928,
+        "fps_wall_median": 85.91228050600917,
+        "total_wall_s": 11.100502919999826,
+        "mean_detections": 9.261146496815286
+      },
+      "track": {
+        "label": "YOLOv10n-track",
+        "frames": 942,
+        "wall_ms_mean": 16.162139290872222,
+        "wall_ms_median": 15.394808999985798,
+        "wall_ms_std": 16.298112223372947,
+        "wall_ms_p95": 17.16566004989772,
+        "inference_ms_mean": 10.074448757966525,
+        "inference_ms_median": 9.890165000001616,
+        "preprocess_ms_mean": 1.7985555997920857,
+        "postprocess_ms_mean": 0.6433940605070405,
+        "fps_wall_mean": 64.17994854423978,
+        "fps_wall_median": 64.95696052577532,
+        "total_wall_s": 15.224735212001633,
+        "mean_detections": 8.332271762208068
+      },
+      "unique_track_ids": 200
+    },
+    "YOLOv11n": {
+      "weights": "yolo11n.pt",
+      "params": 2624080,
+      "load_time_s": 0.33227765200001613,
+      "predict": {
+        "label": "YOLOv11n-predict",
+        "frames": 942,
+        "wall_ms_mean": 12.812890599786872,
+        "wall_ms_median": 12.701901500008717,
+        "wall_ms_std": 0.7260914386887103,
+        "wall_ms_p95": 13.751103150013932,
+        "inference_ms_mean": 9.382307056261913,
+        "inference_ms_median": 9.299836999957733,
+        "preprocess_ms_mean": 1.5939520934172366,
+        "postprocess_ms_mean": 1.4958388280299164,
+        "fps_wall_mean": 78.25261378206307,
+        "fps_wall_median": 78.72836992975093,
+        "total_wall_s": 12.069742944999234,
+        "mean_detections": 11.76963906581741
+      },
+      "track": {
+        "label": "YOLOv11n-track",
+        "frames": 942,
+        "wall_ms_mean": 16.55491996390921,
+        "wall_ms_median": 16.383965500040176,
+        "wall_ms_std": 1.0548349987892955,
+        "wall_ms_p95": 17.991358450058215,
+        "inference_ms_mean": 9.947543263265887,
+        "inference_ms_median": 9.817648499961251,
+        "preprocess_ms_mean": 1.6879509925723233,
+        "postprocess_ms_mean": 1.6011922367294038,
+        "fps_wall_mean": 60.60713145181807,
+        "fps_wall_median": 61.03528478359125,
+        "total_wall_s": 15.594734606002476,
+        "mean_detections": 11.114649681528663
+      },
+      "unique_track_ids": 184
+    },
+    "YOLOv12n": {
+      "weights": "yolo12n.pt",
+      "params": 2603056,
+      "load_time_s": 0.25658413499991184,
+      "predict": {
+        "label": "YOLOv12n-predict",
+        "frames": 942,
+        "wall_ms_mean": 18.10369958916975,
+        "wall_ms_median": 18.001020500037157,
+        "wall_ms_std": 0.7958501985400724,
+        "wall_ms_p95": 19.14141374996916,
+        "inference_ms_mean": 14.570750080680524,
+        "inference_ms_median": 14.462413500041293,
+        "preprocess_ms_mean": 1.5974658078567794,
+        "postprocess_ms_mean": 1.577183207006055,
+        "fps_wall_mean": 55.32861301567628,
+        "fps_wall_median": 55.55240617405046,
+        "total_wall_s": 17.053685012997903,
+        "mean_detections": 11.6932059447983
+      },
+      "track": {
+        "label": "YOLOv12n-track",
+        "frames": 942,
+        "wall_ms_mean": 21.08597146284439,
+        "wall_ms_median": 20.894155499945555,
+        "wall_ms_std": 1.2763055749585377,
+        "wall_ms_p95": 22.86751370006641,
+        "inference_ms_mean": 14.698101735674099,
+        "inference_ms_median": 14.552577000017664,
+        "preprocess_ms_mean": 1.6126077590239594,
+        "postprocess_ms_mean": 1.5591627664511056,
+        "fps_wall_mean": 47.56703421625143,
+        "fps_wall_median": 47.86027394133943,
+        "total_wall_s": 19.862985117999415,
+        "mean_detections": 11.124203821656051
+      },
+      "unique_track_ids": 149
+    }
+  }
+}

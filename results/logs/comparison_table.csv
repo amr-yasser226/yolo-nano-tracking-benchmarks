@@ -1,0 +1,4 @@
+Model,Params,Predict mean ms,Predict mean FPS,Predict p95 ms,Track mean ms,Track mean FPS,Track p95 ms,Total track time s,Tracks
+YOLOv10n,2775520,11.78,85.13,12.63,16.16,64.18,17.17,15.22,200
+YOLOv11n,2624080,12.81,78.25,13.75,16.55,60.61,17.99,15.59,184
+YOLOv12n,2603056,18.1,55.33,19.14,21.09,47.57,22.87,19.86,149
