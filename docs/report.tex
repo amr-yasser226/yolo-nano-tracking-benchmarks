@@ -1,0 +1,94 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=1in}
+
+\title{\textbf{Comparative Analysis of Nano-Scale YOLO Detectors in Video Object Tracking}}
+\author{Amr Yasser}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report presents an empirical analysis comparing the inference speed and tracking efficiency of three nano-scale object detection models: YOLOv10n, YOLOv11n, and YOLOv12n. ByteTrack was utilized as the standard association algorithm across all tests to isolate the pure detection cost. The experiment tracks vehicles in a 30 FPS high-definition (720p) video sequence. Results indicate that while newer architectures like YOLOv12n offer advanced feature extraction capabilities, they exhibit a measurable increase in inference latency compared to the YOLOv10n baseline. We provide a detailed breakdown of predict versus track latency and discuss the practical implications of variance and tail-latency (p95) in production environments.
+\end{abstract}
+
+\section{Introduction}
+Real-time object tracking is a critical component of intelligent transportation systems, surveillance, and autonomous driving. The YOLO (You Only Look Once) family of models has dominated the real-time detection paradigm. With the introduction of YOLOv10n, YOLOv11n, and YOLOv12n, there is a continuous evolution in the trade-off between mean Average Precision (mAP) and computational cost. This experiment benchmarks these three nano-scale models, maintaining a constant tracking algorithm (ByteTrack), precision (FP16), and image resolution (640px) to provide an apples-to-apples comparison of their computational footprint.
+
+\section{Experimental Setup}
+The controlled experiment was executed within a reproducible Kaggle environment. To ensure measurement integrity, 30 warmup frames were discarded before timing commenced, mitigating initial CUDA kernel launch overheads. Synchronization barriers (\texttt{torch.cuda.synchronize()}) were strictly enforced.
+
+\begin{itemize}
+    \item \textbf{Dataset:} \texttt{Test.mp4} (Resolution: 1280x720, 30 FPS, 942 frames, $\approx 31.4$ s)
+    \item \textbf{Hardware:} Tesla T4 GPU, Torch 2.10.0+cu128
+    \item \textbf{Configuration:} \texttt{imgsz}=640, \texttt{half}=True, \texttt{conf}=0.25, \texttt{iou}=0.45
+    \item \textbf{Target Classes:} Vehicles (COCO classes 2, 3, 5, 7)
+    \item \textbf{Tracker:} ByteTrack (\texttt{bytetrack.yaml})
+\end{itemize}
+
+\section{Performance Evaluation}
+
+\subsection{Headline Metrics}
+The raw performance metrics demonstrate a progressive increase in parameter count and computational complexity from v10n to v12n. The pure detection pass (\textit{Predict}) isolates the network's forward pass, while the \textit{Track} pass includes detection, ByteTrack association, Kalman filter updates, and bounding box rendering.
+
+\begin{table}[H]
+    \centering
+    \caption{Aggregate Speed and Detection Metrics}
+    \begin{tabularx}{\textwidth}{@{}l c c c c c c c@{}}
+        \toprule
+        \textbf{Model} & \textbf{Params} & \textbf{Pred. FPS} & \textbf{Track FPS} & \textbf{Pred. Mean} & \textbf{Track Mean} & \textbf{Track p95} & \textbf{Tracks} \\
+        \midrule
+        YOLOv10n & 2,775,520 & 85.1 & 64.2 & 11.78 ms & 16.16 ms & 17.17 ms & 200 \\
+        YOLOv11n & 2,624,080 & 78.3 & 60.6 & 12.81 ms & 16.55 ms & 17.99 ms & 184 \\
+        YOLOv12n & 2,603,056 & 55.3 & 47.6 & 18.10 ms & 21.09 ms & 22.87 ms & 149 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Relative to Baseline}
+When normalized against YOLOv10n, the computational cost of the newer iterations becomes apparent.
+
+\begin{table}[H]
+    \centering
+    \caption{Latency Deviation relative to YOLOv10n}
+    \begin{tabular}{l c c}
+        \toprule
+        \textbf{Model} & \textbf{Predict ms diff} & \textbf{Track ms diff} \\
+        \midrule
+        YOLOv10n & +0.0\% & +0.0\% \\
+        YOLOv11n & +8.7\% & +2.4\% \\
+        YOLOv12n & +53.6\% & +30.5\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Analysis and Discussion}
+
+\paragraph{Pure Detector Cost vs Tracker Overhead}
+The \textit{predict ms} metric represents the cleanest signal of architectural cost. The tracking pass adds a relatively constant overhead across all models (roughly 4-5 ms per frame), encompassing ByteTrack logic and OpenCV rendering.
+
+\paragraph{The Importance of Variance}
+Mean metrics can obscure system jitter. The 95th percentile (p95) tracking latency for YOLOv10n is exceptionally tight (17.17 ms vs 16.16 ms mean), indicating high deterministic reliability, which is crucial for strict real-time pipelines. YOLOv12n exhibits higher variance, rendering it more susceptible to frame drops in edge-deployment scenarios.
+
+\paragraph{Detection Density Constraints}
+The number of unique tracked identities varies (200 for v10n vs 149 for v12n). While this may indicate differences in false-positive suppression or identity-switching behavior, sharp divergences in detection density can marginally skew the FPS measurements, as fewer active tracks reduce Kalman filter update costs.
+
+\section{Conclusion}
+For constrained environments requiring maximum throughput, YOLOv10n remains the optimal choice, delivering the highest FPS and lowest latency variance. YOLOv11n offers a competitive middle ground, trading a marginal 8.7\% increase in pure detection latency for potentially refined architectural features. YOLOv12n, despite its lower parameter count, incurs a significant 53.6\% detection latency penalty, demanding careful consideration if deployed in latency-critical real-time tracking systems.
+
+\end{document}
