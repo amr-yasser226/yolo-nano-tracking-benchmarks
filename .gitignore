@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+
+# Kaggle artifacts
+__results___files/
+
+# Heavy binaries
+weights/
+outputs/
+
+# LaTeX build files
+*.aux
+*.log
+*.out
+*.fls
+*.synctex.gz
+*.fdb_latexmk
